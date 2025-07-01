@@ -1,19 +1,9 @@
+import { CurrencyInfo, CurrencyRate } from "@/types/CurrencyTypes";
 import { graphqlRequest } from "../utils/graphqlRequest";
 
 const SWOP_API_URL = "https://swop.cx/graphql";
 const SWOP_API_KEY =process.env.EXPO_PUBLIC_SWOP_API_KEY!; //TODO: handle no env
 const BASE_CURRENCY = "EUR";
-
-type CurrencyInfo = {
-    code: string;
-    name: string;
-}
-
-type CurrencyRate = {
-    quoteCurrency: string;
-    quote: number;
-    date: string;
-}
 
 export const fetchCurrenciesInfo = async () => {
     const query = `
@@ -35,7 +25,6 @@ export const fetchCurrenciesInfo = async () => {
     const query = `
       query getRates($base: String!) {
         latest(baseCurrency: $base) {
-          date
           quoteCurrency
           quote
         }
@@ -46,6 +35,5 @@ export const fetchCurrenciesInfo = async () => {
     return data.latest.map((item: CurrencyRate) => ({
       code: item.quoteCurrency,
       rate: item.quote,
-      date: item.date,
     }));
   };

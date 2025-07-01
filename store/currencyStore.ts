@@ -14,10 +14,11 @@ type CurrencyStore = {
     lastUpdated: number | null;
     error: string | null;
     fetchCurrencies: () => Promise<void>;
+    fetchCurrencyInfo: () => Promise<void>;
     toggleFavorite: (currency: Currency) => void;
 };
 
-export const useCurrencyStore = create<CurrencyStore>()(
+const useCurrencyStore = create<CurrencyStore>()(
     persist(
       (set, get) => ({
         currencyInfo: [],
@@ -71,3 +72,5 @@ export const useCurrencyStore = create<CurrencyStore>()(
       }
     )
   );
+
+  export default useCurrencyStore;

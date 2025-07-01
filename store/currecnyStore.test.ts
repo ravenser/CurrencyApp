@@ -1,6 +1,6 @@
 import NetInfo from '@react-native-community/netinfo';
 import { mapCurrenciesWithInfo } from '../utils/dataMapping';
-import { useCurrencyStore } from './currencyStore';
+import useCurrencyStore from './currencyStore';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(),
@@ -81,8 +81,8 @@ describe('Currency store ', () => {
 
   it('should map and merge currency data with currencyInfo by code (utility function)', () => {
     const mockCurrencies = [
-      { quoteCurrency: 'USD', quote: 1 },
-      { quoteCurrency: 'EUR', quote: 0.9 },
+      { code: 'USD', rate: 1 },
+      { code: 'EUR', rate: 0.9 },
     ];
     const mockCurrencyInfo = [
       { code: 'USD', name: 'US Dollar' },
@@ -97,9 +97,9 @@ describe('Currency store ', () => {
 
   it('should only include intersection of rates and infos (matched by code)', () => {
     const rates = [
-      { quoteCurrency: 'USD', quote: 1 },
-      { quoteCurrency: 'EUR', quote: 0.9 },
-      { quoteCurrency: 'JPY', quote: 150 }, 
+      { code: 'USD', rate: 1 },
+      { code: 'EUR', rate: 0.9 },
+      { code: 'JPY', rate: 150 }, 
     ];
     const infos = [
       { code: 'USD', name: 'US Dollar' },

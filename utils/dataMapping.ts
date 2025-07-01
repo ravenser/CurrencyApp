@@ -2,17 +2,18 @@ import { CurrencyInfo, CurrencyRate } from "@/types/CurrencyTypes";
 
 export function mapCurrenciesWithInfo(
   rates: CurrencyRate[],
-  infos:CurrencyInfo[]
+  infos: CurrencyInfo[]
 ) {
-  const infoMap = new Map(infos.map(info => [info.code, info]));
+  const infoMap = new Map(infos.map(info => [info.code, info.name]));
+
   return rates
-    .filter(rate => infoMap.has(rate.quoteCurrency))
+    .filter(rate => infoMap.has(rate.code))
     .map(rate => {
-      const info = infoMap.get(rate.quoteCurrency)!;
+      const info = infoMap.get(rate.code)!;
       return {
-        rate: rate.quote,
-        code: rate.quoteCurrency,
-        name: info.name,
+        rate: rate.rate,
+        code: rate.code,
+        name: info,
       };
     });
 }

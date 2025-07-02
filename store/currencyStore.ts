@@ -1,9 +1,9 @@
+import { fetchCurrencies, fetchCurrenciesInfo } from "@/api/currencyApi";
 import { mapCurrenciesWithInfo } from "@/utils/dataMapping";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { fetchCurrencies, fetchCurrenciesInfo } from "../api/currencyApi";
 import { Currency, CurrencyInfo } from "../types/CurrencyTypes";
 
 type CurrencyStore = {
@@ -14,11 +14,11 @@ type CurrencyStore = {
     isConnected: boolean;
     lastUpdated: number | null;
     error: string | null;
+    filterValue: string;
     fetchCurrencies: () => Promise<void>;
     fetchCurrencyInfo: () => Promise<void>;
     toggleFavorite: (currency: Currency) => void;
     setConnectionStatus: (status: boolean) => void;
-    filterValue: string;
     setFilterValue: (v: string) => void;
 };
 
@@ -35,6 +35,16 @@ const useCurrencyStore = create<CurrencyStore>()(
         filterValue: "",
         setFilterValue: (v: string) => set({ filterValue: v }),
         setConnectionStatus: (status: boolean) => set({ isConnected: status }),
+
+        toggleFavorite: (currency) => {
+          const { favorites } = get();
+          const exists = favorites.find(fav => fav.code === currency.code);
+          const newFavorites = exists
+            ? favorites.filter(fav => fav.code !== currency.code)
+            : [...favorites, currency];
+          set({ favorites: newFavorites });
+        },
+
         fetchCurrencyInfo: async () => {
           set({ isLoading: true, error: null });
           const net = await NetInfo.fetch();
@@ -49,7 +59,8 @@ const useCurrencyStore = create<CurrencyStore>()(
           } catch (error) {
             set({ error: "Failed to fetch currencies info", isLoading: false });
           }
-        },          
+        },       
+           
         fetchCurrencies: async () => {
           set({ isLoading: true, error: null });
           const net = await NetInfo.fetch();
@@ -65,19 +76,18 @@ const useCurrencyStore = create<CurrencyStore>()(
           } catch (error) {
             set({ error: "Failed to fetch currencies rates", isLoading: false });
           }
-        },
-        toggleFavorite: (currency) => {
-          const { favorites } = get();
-          const exists = favorites.find(fav => fav.code === currency.code);
-          const newFavorites = exists
-            ? favorites.filter(fav => fav.code !== currency.code)
-            : [...favorites, currency];
-          set({ favorites: newFavorites });
-        },
+        }
       }),
       {
         name: "currency-store",
         storage: createJSONStorage(() => AsyncStorage),
+        partialize: (state) => ({
+          ...state,
+          filterValue: "",
+          isConnected: true,
+          isLoading: false,
+          lastUpdated: null,
+        }),
       }
     )
   );

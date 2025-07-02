@@ -1,3 +1,4 @@
+import React from "react";
 import CustomCountryFlag from "../CountryFlag";
 import SvgIcon from "../SvgIcon";
 import {
@@ -19,7 +20,7 @@ type RateBulletProps = {
   onFavoritePress: () => void;
 };
 
-export default function RateBullet({
+const RateBullet = React.memo(function RateBullet({
   rate,
   name,
   code,
@@ -29,7 +30,11 @@ export default function RateBullet({
   onFavoritePress,
 }: RateBulletProps) {
   return (
-    <SectionContainer isFirst={isFirst} isLast={isLast} testID="RateBullet">
+    <SectionContainer
+      isFirst={isFirst ?? false}
+      isLast={isLast ?? false}
+      testID="RateBullet"
+    >
       <RateBulletContainer>
         <CustomCountryFlag isoCode={code} size={40} />
         <RateBuletDataContainer>
@@ -57,4 +62,6 @@ export default function RateBullet({
       </RateBulletContainer>
     </SectionContainer>
   );
-}
+});
+
+export default RateBullet;

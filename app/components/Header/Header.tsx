@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
 import CustomCountryFlag from "../CountryFlag";
 import SvgIcon from "../SvgIcon";
@@ -20,7 +19,6 @@ type HeaderProps = {
 export default function Header({ isConnected, lastUpdated }: HeaderProps) {
   return (
     <StyledSafeAreaView>
-      <StatusBar style="dark" backgroundColor="rgb(173, 171, 171)" />
       <HeaderContainer>
         {isConnected ? (
           <HeaderText>CurrencyWise</HeaderText>

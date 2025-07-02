@@ -31,6 +31,11 @@ export function useCurrenciesData() {
   const fetchCurrencyInfo = useCurrencyStore((state) => state.fetchCurrencyInfo);
   const toggleFavorite = useCurrencyStore((state) => state.toggleFavorite);
 
+  const refetch = () => {
+    fetchCurrencyInfo();
+    fetchCurrencies();
+  };
+
   //hack to stop using api quata
   useEffect(() => {
     // if (data.length === 0) {
@@ -41,5 +46,5 @@ export function useCurrenciesData() {
     // }
   }, [isConnected]);
 
-  return { data, favoriteCodes, toggleFavorite, isLoading, error };
+  return { data, favoriteCodes, toggleFavorite, isLoading, error, refetch };
 }

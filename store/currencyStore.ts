@@ -1,10 +1,10 @@
+import { mapCurrenciesWithInfo } from "@/utils/dataMapping";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { fetchCurrencies, fetchCurrenciesInfo } from "../api/currencyApi";
 import { Currency, CurrencyInfo } from "../types/CurrencyTypes";
-import { mapCurrenciesWithInfo } from "../utils/dataMapping";
 
 type CurrencyStore = {
     currencyInfo: CurrencyInfo[];
@@ -21,7 +21,7 @@ type CurrencyStore = {
 };
 
 const useCurrencyStore = create<CurrencyStore>()(
-    persist(
+    persist<CurrencyStore>(
       (set, get) => ({
         currencyInfo: [],
         currencies: [],
@@ -36,14 +36,14 @@ const useCurrencyStore = create<CurrencyStore>()(
           const net = await NetInfo.fetch();
           set({ isConnected: net.isConnected ?? false });
           if (!net.isConnected) {
-            set({ isLoading: false, error: "Offline mode: showing cached data" });
+            set({ isLoading: false});
             return;
           }
           try {
             const currencyInfoData = await fetchCurrenciesInfo();
             set({ currencyInfo: currencyInfoData, isLoading: false });
           } catch (error) {
-            set({ error: "Failed to fetch currencies", isLoading: false });
+            set({ error: "Failed to fetch currencies info", isLoading: false });
           }
         },          
         fetchCurrencies: async () => {
@@ -51,7 +51,7 @@ const useCurrencyStore = create<CurrencyStore>()(
           const net = await NetInfo.fetch();
           set({ isConnected: net.isConnected ?? false });
           if (!net.isConnected) {
-            set({ isLoading: false, error: "Offline mode: showing cached data" });
+            set({ isLoading: false});
             return;
           }
           try {
@@ -59,7 +59,7 @@ const useCurrencyStore = create<CurrencyStore>()(
             const mappedData = mapCurrenciesWithInfo(currenciesData, get().currencyInfo);
             set({ currencies: mappedData, isLoading: false, lastUpdated: Date.now() });
           } catch (error) {
-            set({ error: "Failed to fetch currencies", isLoading: false });
+            set({ error: "Failed to fetch currencies rates", isLoading: false });
           }
         },
         toggleFavorite: (currency) => {

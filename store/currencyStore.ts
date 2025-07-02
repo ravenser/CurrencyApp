@@ -18,6 +18,8 @@ type CurrencyStore = {
     fetchCurrencyInfo: () => Promise<void>;
     toggleFavorite: (currency: Currency) => void;
     setConnectionStatus: (status: boolean) => void;
+    filterValue: string;
+    setFilterValue: (v: string) => void;
 };
 
 const useCurrencyStore = create<CurrencyStore>()(
@@ -30,6 +32,8 @@ const useCurrencyStore = create<CurrencyStore>()(
         isLoading: false,
         lastUpdated: null,
         error: null,
+        filterValue: "",
+        setFilterValue: (v: string) => set({ filterValue: v }),
         setConnectionStatus: (status: boolean) => set({ isConnected: status }),
         fetchCurrencyInfo: async () => {
           set({ isLoading: true, error: null });

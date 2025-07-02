@@ -1,8 +1,11 @@
-import React from "react";
+import useCurrencyStore from "@/store/currencyStore";
+import React, { useState } from "react";
 import CustomCountryFlag from "../CountryFlag";
+import { HeaderFilterBar } from "../Filterbar/HeaderFilterBar";
 import SvgIcon from "../SvgIcon";
 import {
   BaseCurrencyContainer,
+  FilterIconButton,
   HeaderContainer,
   HeaderText,
   OfflineContainer,
@@ -11,12 +14,12 @@ import {
   StyledSafeAreaView,
 } from "./Header.styled";
 
-type HeaderProps = {
-  isConnected: boolean;
-  lastUpdated: number | null;
-};
+export default function Header() {
+  const [showFilter, setShowFilter] = useState(false);
 
-export default function Header({ isConnected, lastUpdated }: HeaderProps) {
+  const isConnected = useCurrencyStore((state) => state.isConnected);
+  const lastUpdated = useCurrencyStore((state) => state.lastUpdated);
+
   return (
     <StyledSafeAreaView>
       <HeaderContainer testID="Header">
@@ -34,10 +37,17 @@ export default function Header({ isConnected, lastUpdated }: HeaderProps) {
           </OfflineContainer>
         )}
         <BaseCurrencyContainer>
+          <FilterIconButton
+            onPress={() => setShowFilter((prev) => !prev)}
+            testID="HeaderFilterIcon"
+          >
+            <SvgIcon name="Search" width={28} height={28} color="white" />
+          </FilterIconButton>
           <HeaderText>EUR</HeaderText>
           <CustomCountryFlag isoCode="EUR" size={24} />
         </BaseCurrencyContainer>
       </HeaderContainer>
+      <HeaderFilterBar showFilter={showFilter} />
     </StyledSafeAreaView>
   );
 }

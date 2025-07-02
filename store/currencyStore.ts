@@ -11,11 +11,13 @@ type CurrencyStore = {
     currencies: Currency[];
     favorites: Currency[];
     isLoading: boolean;
+    isConnected: boolean;
     lastUpdated: number | null;
     error: string | null;
     fetchCurrencies: () => Promise<void>;
     fetchCurrencyInfo: () => Promise<void>;
     toggleFavorite: (currency: Currency) => void;
+    setConnectionStatus: (status: boolean) => void;
 };
 
 const useCurrencyStore = create<CurrencyStore>()(
@@ -23,14 +25,16 @@ const useCurrencyStore = create<CurrencyStore>()(
       (set, get) => ({
         currencyInfo: [],
         currencies: [],
+        isConnected: true,
         favorites: [],
         isLoading: false,
         lastUpdated: null,
         error: null,
-
+        setConnectionStatus: (status: boolean) => set({ isConnected: status }),
         fetchCurrencyInfo: async () => {
           set({ isLoading: true, error: null });
           const net = await NetInfo.fetch();
+          set({ isConnected: net.isConnected ?? false });
           if (!net.isConnected) {
             set({ isLoading: false, error: "Offline mode: showing cached data" });
             return;
@@ -45,6 +49,7 @@ const useCurrencyStore = create<CurrencyStore>()(
         fetchCurrencies: async () => {
           set({ isLoading: true, error: null });
           const net = await NetInfo.fetch();
+          set({ isConnected: net.isConnected ?? false });
           if (!net.isConnected) {
             set({ isLoading: false, error: "Offline mode: showing cached data" });
             return;
@@ -52,7 +57,7 @@ const useCurrencyStore = create<CurrencyStore>()(
           try {
             const currenciesData = await fetchCurrencies();
             const mappedData = mapCurrenciesWithInfo(currenciesData, get().currencyInfo);
-            set({ currencies: mappedData, isLoading: false });
+            set({ currencies: mappedData, isLoading: false, lastUpdated: Date.now() });
           } catch (error) {
             set({ error: "Failed to fetch currencies", isLoading: false });
           }

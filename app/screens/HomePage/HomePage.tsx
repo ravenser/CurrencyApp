@@ -1,5 +1,6 @@
 import Header from "@/app/components/Header";
 import RateBullet from "@/app/components/RateBullet";
+import useCurrencyStore from "@/store/currencyStore";
 import { SectionedData } from "@/types/CurrencyTypes";
 import { FlashList } from "@shopify/flash-list";
 import React, { useCallback } from "react";
@@ -9,6 +10,7 @@ import { useCurrenciesData } from "./useCurrenciesData";
 export default function HomePage() {
   const { data, favoriteCodes, toggleFavorite, isLoading, error } =
     useCurrenciesData();
+  const { isConnected, lastUpdated } = useCurrencyStore();
   const keyExtractor = useCallback((item: SectionedData) => {
     return item.type === "header" ? item.title : item.code;
   }, []);
@@ -39,7 +41,7 @@ export default function HomePage() {
 
   return (
     <>
-      <Header />
+      <Header isConnected={isConnected} lastUpdated={lastUpdated} />
       <HomePageContainer>
         <FlashList
           data={data}

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 export function useCurrenciesData() {
   const currencies = useCurrencyStore((state) => state.currencies);
   const favorites = useCurrencyStore((state) => state.favorites);
+  const isConnected = useCurrencyStore((state) => state.isConnected);
   const favoriteCodes = new Set(favorites.map(fav => fav.code));
   const favoritesArray = currencies.filter(item => favoriteCodes.has(item.code));
   const nonFavoritesArray = currencies.filter(item => !favoriteCodes.has(item.code));
@@ -30,13 +31,15 @@ export function useCurrenciesData() {
   const fetchCurrencyInfo = useCurrencyStore((state) => state.fetchCurrencyInfo);
   const toggleFavorite = useCurrencyStore((state) => state.toggleFavorite);
 
-  //hack to stop using api quato
+  //hack to stop using api quata
   useEffect(() => {
-   if (data.length === 0) {
-    fetchCurrencyInfo();
-    fetchCurrencies();
-   }
-  }, []);
+    // if (data.length === 0) {
+      if (isConnected) {
+        fetchCurrencyInfo();
+        fetchCurrencies();
+      }
+    // }
+  }, [isConnected]);
 
   return { data, favoriteCodes, toggleFavorite, isLoading, error };
 }

@@ -19,7 +19,7 @@ type HeaderProps = {
 export default function Header({ isConnected, lastUpdated }: HeaderProps) {
   return (
     <StyledSafeAreaView>
-      <HeaderContainer>
+      <HeaderContainer testID="Header">
         {isConnected ? (
           <HeaderText>CurrencyWise</HeaderText>
         ) : (

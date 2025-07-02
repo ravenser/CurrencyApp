@@ -75,7 +75,8 @@ describe('Currency store ', () => {
     const { fetchCurrencies } = useCurrencyStore.getState();
     await fetchCurrencies();
     
-    expect(useCurrencyStore.getState().error).toBe('Offline mode: showing cached data');
+    expect(useCurrencyStore.getState().error).toBeNull();
+    expect(useCurrencyStore.getState().isConnected).toBe(false);
     expect(useCurrencyStore.getState().isLoading).toBe(false);
   });
 

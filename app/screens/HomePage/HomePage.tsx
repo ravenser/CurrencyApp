@@ -26,7 +26,7 @@ export default function HomePage() {
       const isFirst = !prev || prev.type === "header";
       const isLast = !next || next.type === "header";
       return item.type === "header" ? (
-        <SectionHeader>{item.title}</SectionHeader>
+        <SectionHeader testID="SectionHeader">{item.title}</SectionHeader>
       ) : (
         <RateBullet
           rate={item.rate}
@@ -58,6 +58,7 @@ export default function HomePage() {
       />
       <HomePageContainer>
         <FlashList
+          testID="FlashList"
           data={data}
           extraData={favoriteCodes}
           keyExtractor={keyExtractor}

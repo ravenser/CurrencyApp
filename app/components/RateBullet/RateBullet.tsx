@@ -29,7 +29,7 @@ export default function RateBullet({
   onFavoritePress,
 }: RateBulletProps) {
   return (
-    <SectionContainer isFirst={isFirst} isLast={isLast}>
+    <SectionContainer isFirst={isFirst} isLast={isLast} testID="RateBullet">
       <RateBulletContainer>
         <CustomCountryFlag isoCode={code} size={40} />
         <RateBuletDataContainer>
@@ -42,7 +42,11 @@ export default function RateBullet({
             <RateBulletText>{(1 / rate).toFixed(3)}</RateBulletText>
           </RateBulletExchangeContainer>
         </RateBuletDataContainer>
-        <FavoriteButton onPress={onFavoritePress} hitSlop={8}>
+        <FavoriteButton
+          onPress={onFavoritePress}
+          hitSlop={8}
+          testID={`FavoriteButton-${code}`}
+        >
           <SvgIcon
             name="Star"
             width={44}

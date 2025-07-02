@@ -23,15 +23,15 @@ const ErrorToast: React.FC<ErrorToastProps> = ({
 }) => {
   if (!visible) return null;
   return (
-    <ToastContainer {...props}>
+    <ToastContainer {...props} testID="ErrorToast">
       <ErrorText numberOfLines={2}>{message}</ErrorText>
       {onRetry && (
-        <Button onPress={onRetry}>
+        <Button onPress={onRetry} testID="RetryButton">
           <ButtonText>Retry</ButtonText>
         </Button>
       )}
       {onClose && (
-        <Button onPress={onClose}>
+        <Button onPress={onClose} testID="CloseButton">
           <ButtonText>Close</ButtonText>
         </Button>
       )}

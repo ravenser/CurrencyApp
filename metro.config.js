@@ -1,4 +1,5 @@
 const { getDefaultConfig } = require("expo/metro-config");
+const exclusionList = require("metro-config/src/defaults/exclusionList");
 
 module.exports = (async () => {
   const config = getDefaultConfig(__dirname);
@@ -15,6 +16,14 @@ module.exports = (async () => {
     assetExts: assetExts.filter((ext) => ext !== "svg"),
     sourceExts: [...sourceExts, "svg"],
     unstable_conditionNames: ["browser", "require", "react-native"],
+    blacklistRE: exclusionList([
+      /.*\.test\.js$/,
+      /.*\.test\.ts$/,
+      /.*\.test\.tsx$/,
+      /.*\.spec\.js$/,
+      /.*\.spec\.ts$/,
+      /.*\.spec\.tsx$/,
+    ]),
   };
 
   return config;

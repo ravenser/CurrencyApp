@@ -26,8 +26,13 @@ jest.mock("@shopify/flash-list", () => {
   };
 });
 
+const mockUseCurrencySearch = jest.fn();
+jest.mock("../../hooks/useCurrencySearch", () => ({
+  useCurrencySearch: () => mockUseCurrencySearch(),
+}));
+
 const mockUseCurrenciesData = jest.fn();
-jest.mock("./useCurrenciesData", () => ({
+jest.mock("../../hooks/useCurrenciesData", () => ({
   useCurrenciesData: () => mockUseCurrenciesData(),
 }));
 
@@ -51,6 +56,9 @@ describe("HomePage", () => {
     mockUseCurrencyStore.mockReturnValue({
       isConnected: true,
       lastUpdated: 1234567890,
+    });
+    mockUseCurrencySearch.mockReturnValue({
+      filteredData: [],
     });
     const { getByTestId } = render(<HomePage />);
     expect(getByTestId("Header")).toBeTruthy();
@@ -87,6 +95,9 @@ describe("HomePage", () => {
       isConnected: true,
       lastUpdated: 1234567890,
     });
+    mockUseCurrencySearch.mockReturnValue({
+      filteredData: [],
+    });
     const { getByTestId } = render(<HomePage />);
     expect(getByTestId("ErrorToast")).toBeTruthy();
   });
@@ -110,6 +121,9 @@ describe("HomePage", () => {
       isConnected: true,
       lastUpdated: 1234567890,
     });
+    mockUseCurrencySearch.mockReturnValue({
+      filteredData: data,
+    });
     const { getByText } = render(<HomePage />);
     expect(getByText("USD : US Dollar")).toBeTruthy();
     expect(getByText("EUR : Euro")).toBeTruthy();
@@ -132,6 +146,9 @@ describe("HomePage", () => {
       isConnected: true,
       lastUpdated: 1234567890,
     });
+    mockUseCurrencySearch.mockReturnValue({
+      filteredData: data,
+    });
     const { getAllByTestId } = render(<HomePage />);
     const headers = getAllByTestId("SectionHeader");
     expect(headers[0].props.children).toBe("Popular");
@@ -151,6 +168,9 @@ describe("HomePage", () => {
     mockUseCurrencyStore.mockReturnValue({
       isConnected: true,
       lastUpdated: 1234567890,
+    });
+    mockUseCurrencySearch.mockReturnValue({
+      filteredData: [],
     });
     const { getByTestId } = render(<HomePage />);
     fireEvent.press(getByTestId("RetryButton"));
@@ -175,6 +195,9 @@ describe("HomePage", () => {
       isConnected: true,
       lastUpdated: 1234567890,
     });
+    mockUseCurrencySearch.mockReturnValue({
+      filteredData: [],
+    });
     const { getByTestId } = render(<HomePage />);
     fireEvent.press(getByTestId("CloseButton"));
   });
@@ -197,6 +220,9 @@ describe("HomePage", () => {
     mockUseCurrencyStore.mockReturnValue({
       isConnected: true,
       lastUpdated: 1234567890,
+    });
+    mockUseCurrencySearch.mockReturnValue({
+      filteredData: data,
     });
     const { getByTestId } = render(<HomePage />);
 

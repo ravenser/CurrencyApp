@@ -1,50 +1,72 @@
-# Welcome to your Expo app 👋
+### Overview
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+CurrencyApp is a mobile app for viewing and favoriting currency exchange rates, with offline access to previously viewed and favorite rates.
 
-## Get started
+## Features
 
-1. Install dependencies
+- View real-time currency exchange rates
+- Add/remove rates to/from favorites
+- Search currencies you need
+- Offline access to cached and favorite rates
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### Installation
 
 ```bash
-npm run reset-project
+git clone https://github.com/ravenser/CurrencyApp.git
+cd PathToApp/CurrencyApp
+echo EXPO_PUBLIC_SWOP_API_KEY=your_api_key_here > .env
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Running the App
 
-## Learn more
+- Use Expo Go on your device, or run on an emulator, or use apk.
 
-To learn more about developing your project with Expo, look at the following resources:
+### App architecture and design choices.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+I've created this app trying to follow principles of modular architecture, and tried my best to make the code clean, with clear separation of concerns. It's a basic one-page list app with a header.
 
-## Join the community
+- I've chosen Expo for this project because it's the best choice for that kind of app, as it has a lot of required tools and the app doesn't require precise control over native modules, or other need for a vanilla React Native app.
+- For state management, I've chosen Zustand as it is a very light and easy-to-use state management tool, and I've heard a lot of positive things about it from other developers.
+  As this is a single-page app, there is no need for navigation.
 
-Join our community of developers creating universal apps.
+# Design choices
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+For design, I've tried to use UIzard and managed to transform some of its suggestions into a working design.
+As for design choices, I've chosen to create a simple and clean design.
+
+### Description of app structure and major components.
+
+- app/components - contains React components that are used in Screens.
+- app/hooks - contains hooks that are responsible for app logic, like filtering data, fetching data, and connection status handling.
+- app/api - handles API communication, basically only used for fetching from SWOP
+- store - manages the app store and actions within it
+- utils - utility functions for adata transformation, debouncing, etc
+- assets - images, SVGs
+
+# Major components
+
+- HomePage - main app screen that contains all ui
+- Header - Header of app with some useful info like net status and base currency, also contains search bar when needed
+
+### Offline mod
+
+This app uses Zustand store with persisting in ASyncStorage, connection status checked via community/net-info.
+The flow here is simple: check connection status -> if offline - use cached data, else fetch data from api, refetch when the connection is restored(here is some restriction due to api quota limitations)
+
+### Additional features
+
+# Filter feature or tests
+
+- It allows users to filter the country list by name or code
+- I've added some tests for the home page and store
+
+# Libraries
+
+- Zustang - state management
+- community/net-info - connection status handling
+- async-storage - for persisting data
+- flash-list - for a more efficient list
+- country-flag - for country flags
+- react-native-svg - for svgs

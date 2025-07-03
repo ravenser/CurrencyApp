@@ -1,4 +1,4 @@
-### Overview
+# Overview
 
 CurrencyApp is a mobile app for viewing and favoriting currency exchange rates, with offline access to previously viewed and favorite rates.
 
@@ -9,7 +9,7 @@ CurrencyApp is a mobile app for viewing and favoriting currency exchange rates, 
 - Search currencies you need
 - Offline access to cached and favorite rates
 
-### Installation
+# Installation
 
 ```bash
 git clone https://github.com/ravenser/CurrencyApp.git
@@ -23,7 +23,7 @@ npx expo start
 
 - Use Expo Go on your device, or run on an emulator, or use apk.
 
-### App architecture and design choices.
+# App architecture and design choices.
 
 I've created this app trying to follow principles of modular architecture, and tried my best to make the code clean, with clear separation of concerns. It's a basic one-page list app with a header.
 
@@ -31,12 +31,12 @@ I've created this app trying to follow principles of modular architecture, and t
 - For state management, I've chosen Zustand as it is a very light and easy-to-use state management tool, and I've heard a lot of positive things about it from other developers.
   As this is a single-page app, there is no need for navigation.
 
-# Design choices
+### Design choices
 
 For design, I've tried to use UIzard and managed to transform some of its suggestions into a working design.
 As for design choices, I've chosen to create a simple and clean design.
 
-### Description of app structure and major components.
+# Description of app structure and major components.
 
 - app/components - contains React components that are used in Screens.
 - app/hooks - contains hooks that are responsible for app logic, like filtering data, fetching data, and connection status handling.
@@ -45,24 +45,24 @@ As for design choices, I've chosen to create a simple and clean design.
 - utils - utility functions for adata transformation, debouncing, etc
 - assets - images, SVGs
 
-# Major components
+### Major components
 
 - HomePage - main app screen that contains all ui
 - Header - Header of app with some useful info like net status and base currency, also contains search bar when needed
 
-### Offline mod
+# Offline mod
 
 This app uses Zustand store with persisting in ASyncStorage, connection status checked via community/net-info.
 The flow here is simple: check connection status -> if offline - use cached data, else fetch data from api, refetch when the connection is restored(here is some restriction due to api quota limitations)
 
-### Additional features
+# Additional features and libraries
 
-# Filter feature or tests
+### Filter feature or tests
 
 - It allows users to filter the country list by name or code
 - I've added some tests for the home page and store
 
-# Libraries
+### Libraries
 
 - Zustang - state management
 - community/net-info - connection status handling
